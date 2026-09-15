@@ -9,6 +9,9 @@
     "url": "https://github.com/seatonjiang/picgo-plugin-dogecloud/issues",
     "email": "hi@seatonjiang.com"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "npx ncc build src/index.js -o dist"
