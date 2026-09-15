@@ -1,0 +1,33 @@
+{
+  "name": "@seatonjiang/picgo-plugin-dogecloud",
+  "version": "1.0.0",
+  "description": "PicGo plugin for DogeCloud OSS",
+  "license": "MIT",
+  "author": "Seaton Jiang",
+  "homepage": "https://github.com/seatonjiang/picgo-plugin-dogecloud",
+  "bugs": {
+    "url": "https://github.com/seatonjiang/picgo-plugin-dogecloud/issues",
+    "email": "hi@seatonjiang.com"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx ncc build src/index.js -o dist"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.45.0"
+  },
+  "keywords": [
+    "dogecloud",
+    "oss",
+    "picgo",
+    "picgo-plugin",
+    "picgo-gui-plugin"
+  ],
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1132.0",
+    "mime-types": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
