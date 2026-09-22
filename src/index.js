@@ -97,6 +97,31 @@ function getMimeType(fileName) {
   return mime.lookup(fileName) || "application/octet-stream";
 }
 
+const BASE36_CHARS = "0123456789abcdefghijklmnopqrstuvwxyz";
+
+// 将 buffer 视为大整数做 Base36 编码（仅含 0-9 a-z）
+function base36Encode(buffer) {
+  let num = BigInt(`0x${buffer.toString("hex")}`);
+  if (num === 0n) return "0";
+  let result = "";
+  while (num > 0n) {
+    result = BASE36_CHARS[Number(num % 36n)] + result;
+    num /= 36n;
+  }
+  return result;
+}
+
+// 基于文件内容 md5、时间戳与随机盐生成短 id，避免文件名冲突和内容可预测
+function generateFileId(body) {
+  const fileHash = crypto.createHash("md5").update(body).digest("hex");
+  const timestamp = Date.now().toString();
+  const salt = crypto.randomBytes(8).toString("hex");
+  const encoded = base36Encode(
+    Buffer.from(fileHash + timestamp + salt, "utf8"),
+  );
+  return encoded.slice(0, 12);
+}
+
 // 替换存储路径模板中的 {year}/{month}/{day}/{md5} 占位符
 function resolvePathTemplate(template, { md5, date }) {
   const year = String(date.getFullYear());
@@ -112,9 +137,7 @@ function resolvePathTemplate(template, { md5, date }) {
 function buildKey(pathPrefix, fileName, body) {
   const template = pathPrefix || "";
   const hasMd5Placeholder = template.includes("{md5}");
-  const md5 = hasMd5Placeholder
-    ? crypto.createHash("md5").update(body).digest("hex")
-    : "";
+  const md5 = hasMd5Placeholder ? generateFileId(body) : "";
   const resolved = resolvePathTemplate(template, { md5, date: new Date() });
   const prefix = resolved.replace(/^\/+|\/+$/g, "");
 

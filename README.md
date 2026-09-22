@@ -11,8 +11,8 @@
 | `accessKey` | 是 | AccessKey，可以在「[多吉云 - 用户中心 - 密钥管理](https://console.dogecloud.com/user/keys)」中获取 |
 | `secretKey` | 是 | SecretKey，可以在「[多吉云 - 用户中心 - 密钥管理](https://console.dogecloud.com/user/keys)」中获取 |
 | `bucket` | 是 | 存储空间名称，可以在「[多吉云 - 云存储 - 存储空间列表](https://console.dogecloud.com/oss/list)」中获取 |
-| `customUrl` | 是 | 需要填写已绑定的加速域名 |
-| `path`| 否 | 保存到存储空间的路径，支持固定参数 `{year}`、`{month}`、`{day}`、`{md5}`，留空则存储在根目录 |
+| `customUrl` | 是 | 加速域名，需要填写已绑定的加速域名 |
+| `path`| 否 | 存储路径，支持固定参数 `{year}`、`{month}`、`{day}`、`{md5}`，留空则存储在根目录 |
 
 ## 💖 项目支持
 
