@@ -8,11 +8,21 @@
 
 | 参数 | 是否必填 | 描述 |
 | :---: | :---: | ---- |
-| `accessKey` | 是 | AccessKey，可以在「[多吉云 - 用户中心 - 密钥管理](https://console.dogecloud.com/user/keys)」中获取 |
-| `secretKey` | 是 | SecretKey，可以在「[多吉云 - 用户中心 - 密钥管理](https://console.dogecloud.com/user/keys)」中获取 |
-| `bucket` | 是 | 存储空间名称，可以在「[多吉云 - 云存储 - 存储空间列表](https://console.dogecloud.com/oss/list)」中获取 |
+| `accessKey` | 是 | 多吉云平台 AccessKey |
+| `secretKey` | 是 | 多吉云平台 SecretKey |
+| `bucket` | 是 | 存储空间名称 |
 | `customUrl` | 是 | 加速域名，需要填写已绑定的加速域名 |
-| `path`| 否 | 存储路径，支持固定参数 `{year}`、`{month}`、`{day}`、`{md5}`，留空则存储在根目录 |
+| `path`| 否 | 存储路径，支持固定占位符，不填存储在根目录 |
+
+| 占位符 | 描述 |
+| :---: | ---- |
+| `year` | 4 位年份，例如 `2026` |
+| `month` | 2 位月份，例如 `01` |
+| `day` | 2 位日期，例如 `08` |
+| `md5` | 文件内容完整 MD5 哈希值 |
+| `sha1` | 文件内容完整 SHA1 哈希值 |
+| `sha256` | 文件内容完整 SHA256 哈希值 |
+| `shortmd5` | 文件内容 MD5 哈希值的前 12 位 |
 
 ## 💖 项目支持
 
