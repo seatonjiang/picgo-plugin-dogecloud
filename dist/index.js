@@ -3352,10 +3352,10 @@ const _xawob = "x-amz-write-offset-bytes";
 const _xawrl = "x-amz-website-redirect-location";
 const _xs = "xsi:type";
 const n0 = "com.amazonaws.s3";
-const _s_registry = TypeRegistry.for(_s);
+const _s_registry = new TypeRegistry(_s);
 var S3ServiceException$ = [-3, _s, "S3ServiceException", 0, [], []];
 _s_registry.registerError(S3ServiceException$, S3ServiceException);
-const n0_registry = TypeRegistry.for(n0);
+const n0_registry = new TypeRegistry(n0);
 var AccessDenied$ = [-3, n0, _AD,
     { [_e]: _c, [_hE]: 403 },
     [],
@@ -5699,7 +5699,7 @@ var WriteGetObjectResponse$ = [9, n0, _WGOR,
 class CreateSessionCommand extends command(_ep4, _mw0, "CreateSession", CreateSession$) {
 }
 
-var version = "3.1136.0";
+var version = "3.1146.0";
 var packageInfo = {
 	version: version};
 
@@ -6671,6 +6671,7 @@ const InventoryOptionalField = {
     ETag: "ETag",
     EncryptionStatus: "EncryptionStatus",
     IntelligentTieringAccessTier: "IntelligentTieringAccessTier",
+    IntelligentTieringReferenceDate: "IntelligentTieringReferenceDate",
     IsMultipartUploaded: "IsMultipartUploaded",
     LastModifiedDate: "LastModifiedDate",
     LifecycleExpirationDate: "LifecycleExpirationDate",
@@ -13270,10 +13271,10 @@ exports.fromWebToken = fromWebToken;
 
 const { NoOpLogger, getSmithyContext } = __nccwpck_require__(2658);
 const { HttpRequest, HttpResponse } = __nccwpck_require__(3422);
+const { setFeature } = __nccwpck_require__(5152);
 const { parseRfc7231DateTime } = __nccwpck_require__(2430);
 const { SignatureV4SignWithCredentials } = __nccwpck_require__(5785);
 const { booleanSelector, SelectorType } = __nccwpck_require__(7291);
-const { setFeature } = __nccwpck_require__(5152);
 const { httpSigningMiddlewareOptions } = __nccwpck_require__(402);
 const { Readable } = __nccwpck_require__(7075);
 const { validate, parse } = __nccwpck_require__(519);
@@ -13370,6 +13371,7 @@ function regionRedirectMiddleware(clientConfig) {
                             const actualRegion = bucketRegionHeader;
                             context.logger?.debug(`Redirecting from ${await clientConfig.region()} to ${actualRegion}`);
                             context.__s3RegionRedirect = actualRegion;
+                            setFeature(context, "S3_REGION_REDIRECT", "Ah");
                         }
                         catch (e) {
                             throw new Error("Region redirect failed: " + e);
@@ -14395,7 +14397,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.44";
+var version = "3.997.45";
 var packageInfo = {
 	version: version};
 
@@ -14619,10 +14621,10 @@ const _tO = "tokenOutput";
 const _tT = "tokenType";
 const _tt = "token_type";
 const n0 = "com.amazonaws.signin";
-const _s_registry = TypeRegistry.for(_s);
+const _s_registry = new TypeRegistry(_s);
 var SigninServiceException$ = [-3, _s, "SigninServiceException", 0, [], []];
 _s_registry.registerError(SigninServiceException$, SigninServiceException);
-const n0_registry = TypeRegistry.for(n0);
+const n0_registry = new TypeRegistry(n0);
 var AccessDeniedException$ = [-3, n0, _ADE,
     { [_e]: _c },
     [_e, _m],
@@ -14992,7 +14994,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.44";
+var version = "3.997.45";
 var packageInfo = {
 	version: version};
 
@@ -15286,10 +15288,10 @@ const _sc = "scope";
 const _se = "server";
 const _tT = "tokenType";
 const n0 = "com.amazonaws.ssooidc";
-const _s_registry = TypeRegistry.for(_s);
+const _s_registry = new TypeRegistry(_s);
 var SSOOIDCServiceException$ = [-3, _s, "SSOOIDCServiceException", 0, [], []];
 _s_registry.registerError(SSOOIDCServiceException$, SSOOIDCServiceException);
-const n0_registry = TypeRegistry.for(n0);
+const n0_registry = new TypeRegistry(n0);
 var AccessDeniedException$ = [-3, n0, _ADE,
     { [_e]: _c, [_hE]: 400 },
     [_e, _r, _ed],
@@ -15673,7 +15675,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.44";
+var version = "3.997.45";
 var packageInfo = {
 	version: version};
 
@@ -15825,10 +15827,10 @@ const _sAK = "secretAccessKey";
 const _sT = "sessionToken";
 const _xasbt = "x-amz-sso_bearer_token";
 const n0 = "com.amazonaws.sso";
-const _s_registry = TypeRegistry.for(_s);
+const _s_registry = new TypeRegistry(_s);
 var SSOServiceException$ = [-3, _s, "SSOServiceException", 0, [], []];
 _s_registry.registerError(SSOServiceException$, SSOServiceException);
-const n0_registry = TypeRegistry.for(n0);
+const n0_registry = new TypeRegistry(n0);
 var InvalidRequestException$ = [-3, n0, _IRE,
     { [_e]: _c, [_hE]: 400 },
     [_m],
@@ -16328,7 +16330,7 @@ const commonParams = {
     UseDualStack: { type: "builtInParams", name: "useDualstackEndpoint" },
 };
 
-var version = "3.997.44";
+var version = "3.997.45";
 var packageInfo = {
 	version: version};
 
@@ -16447,6 +16449,7 @@ const _IDPRCE = "IDPRejectedClaimException";
 const _IITE = "InvalidIdentityTokenException";
 const _K = "Key";
 const _MPDE = "MalformedPolicyDocumentException";
+const _MSTS = "MinimumSessionTokenSize";
 const _P = "Policy";
 const _PA = "PolicyArns";
 const _PAr = "ProviderArn";
@@ -16466,6 +16469,8 @@ const _SFWIT = "SubjectFromWebIdentityToken";
 const _SI = "SourceIdentity";
 const _SN = "SerialNumber";
 const _ST = "SessionToken";
+const _STS = "SessionTokenSize";
+const _STU = "SessionTokenUtilization";
 const _T = "Tags";
 const _TC = "TokenCode";
 const _TTK = "TransitiveTagKeys";
@@ -16484,10 +16489,10 @@ const _pDLT = "policyDescriptorListType";
 const _s = "smithy.ts.sdk.synthetic.com.amazonaws.sts";
 const _tLT = "tagListType";
 const n0 = "com.amazonaws.sts";
-const _s_registry = TypeRegistry.for(_s);
+const _s_registry = new TypeRegistry(_s);
 var STSServiceException$ = [-3, _s, "STSServiceException", 0, [], []];
 _s_registry.registerError(STSServiceException$, STSServiceException);
-const n0_registry = TypeRegistry.for(n0);
+const n0_registry = new TypeRegistry(n0);
 var ExpiredTokenException$ = [-3, n0, _ETE,
     { [_aQE]: [`ExpiredTokenException`, 400], [_e]: _c, [_hE]: 400 },
     [_m],
@@ -16543,23 +16548,23 @@ var AssumedRoleUser$ = [3, n0, _ARU,
 ];
 var AssumeRoleRequest$ = [3, n0, _ARR,
     0,
-    [_RA, _RSN, _PA, _P, _DS, _T, _TTK, _EI, _SN, _TC, _SI, _PC],
-    [0, 0, () => policyDescriptorListType, 0, 1, () => tagListType, 64 | 0, 0, 0, 0, 0, () => ProvidedContextsListType], 2
+    [_RA, _RSN, _PA, _P, _DS, _T, _TTK, _EI, _SN, _TC, _SI, _PC, _MSTS],
+    [0, 0, () => policyDescriptorListType, 0, 1, () => tagListType, 64 | 0, 0, 0, 0, 0, () => ProvidedContextsListType, 1], 2
 ];
 var AssumeRoleResponse$ = [3, n0, _ARRs,
     0,
-    [_C, _ARU, _PPS, _SI],
-    [[() => Credentials$, 0], () => AssumedRoleUser$, 1, 0]
+    [_C, _ARU, _PPS, _SI, _STU, _STS],
+    [[() => Credentials$, 0], () => AssumedRoleUser$, 1, 0, 1, 1]
 ];
 var AssumeRoleWithWebIdentityRequest$ = [3, n0, _ARWWIR,
     0,
-    [_RA, _RSN, _WIT, _PI, _PA, _P, _DS],
-    [0, 0, [() => clientTokenType, 0], 0, () => policyDescriptorListType, 0, 1], 3
+    [_RA, _RSN, _WIT, _PI, _PA, _P, _DS, _MSTS],
+    [0, 0, [() => clientTokenType, 0], 0, () => policyDescriptorListType, 0, 1, 1], 3
 ];
 var AssumeRoleWithWebIdentityResponse$ = [3, n0, _ARWWIRs,
     0,
-    [_C, _SFWIT, _ARU, _PPS, _Pr, _Au, _SI],
-    [[() => Credentials$, 0], 0, () => AssumedRoleUser$, 1, 0, 0, 0]
+    [_C, _SFWIT, _ARU, _PPS, _Pr, _Au, _SI, _STU, _STS],
+    [[() => Credentials$, 0], 0, () => AssumedRoleUser$, 1, 0, 0, 0, 1, 1]
 ];
 var Credentials$ = [3, n0, _C,
     0,
@@ -19053,25 +19058,10 @@ const loadSmithyRpcV2CborErrorCode = (output, data) => {
         if (cleanValue.indexOf(":") >= 0) {
             cleanValue = cleanValue.split(":")[0];
         }
-        if (cleanValue.indexOf("#") >= 0) {
-            cleanValue = cleanValue.split("#")[1];
-        }
         return cleanValue;
     };
     if (data["__type"] !== undefined) {
         return sanitizeErrorCode(data["__type"]);
-    }
-    let codeKey;
-    for (const key in data) {
-        if (!hasOwn(data, key))
-            continue;
-        if (key.toLowerCase() === "code") {
-            codeKey = key;
-            break;
-        }
-    }
-    if (codeKey && data[codeKey] !== undefined) {
-        return sanitizeErrorCode(data[codeKey]);
     }
 };
 const checkCborResponse = (response) => {
@@ -20429,37 +20419,37 @@ class SmithyRpcV2CborProtocol extends RpcProtocol {
         return super.deserializeResponse(operationSchema, context, response);
     }
     async handleError(operationSchema, context, response, dataObject, metadata) {
-        const errorName = loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
+        const errorIdentifier = loadSmithyRpcV2CborErrorCode(response, dataObject) ?? "Unknown";
+        const preferredNamespaces = ["*"];
+        const { defaultNamespace } = this.options;
+        preferredNamespaces.unshift(defaultNamespace);
+        const [namespace, errorShapeName] = (() => {
+            if (errorIdentifier.includes("#")) {
+                return errorIdentifier.split("#");
+            }
+            return [undefined, errorIdentifier];
+        })();
+        if (namespace) {
+            preferredNamespaces.unshift(namespace);
+        }
         const errorMetadata = {
             $metadata: metadata,
-            $fault: response.statusCode <= 500 ? "client" : "server",
+            $fault: response.statusCode < 500 ? "client" : "server",
         };
-        let namespace = this.options.defaultNamespace;
-        if (errorName.includes("#")) {
-            [namespace] = errorName.split("#");
+        const preferredRegistries = [this.compositeErrorRegistry];
+        if (namespace) {
+            preferredRegistries.push(TypeRegistry.for(namespace));
         }
-        const registry = this.compositeErrorRegistry;
-        const nsRegistry = TypeRegistry.for(namespace);
-        registry.copyFrom(nsRegistry);
-        let errorSchema;
-        try {
-            errorSchema = registry.getSchema(errorName);
-        }
-        catch (ignored) {
+        preferredRegistries.push(TypeRegistry.for(defaultNamespace));
+        const [errorSchema, ErrorCtor, errorMode] = this.resolveError(errorShapeName, preferredNamespaces, preferredRegistries);
+        if (errorMode === "native" || errorMode === "synthetic") {
             if (dataObject.Message) {
                 dataObject.message = dataObject.Message;
             }
-            const syntheticRegistry = TypeRegistry.for("smithy.ts.sdk.synthetic." + namespace);
-            registry.copyFrom(syntheticRegistry);
-            const baseExceptionSchema = registry.getBaseException();
-            if (baseExceptionSchema) {
-                const ErrorCtor = registry.getErrorCtor(baseExceptionSchema);
-                throw Object.assign(new ErrorCtor({ name: errorName }), errorMetadata, dataObject);
-            }
-            throw Object.assign(new Error(errorName), errorMetadata, dataObject);
+            const error = errorMode === "synthetic" ? new ErrorCtor({ name: errorShapeName }) : new Error(errorShapeName);
+            throw Object.assign(error, errorMetadata, dataObject);
         }
         const ns = NormalizedSchema.of(errorSchema);
-        const ErrorCtor = registry.getErrorCtor(errorSchema);
         const message = dataObject.message ?? dataObject.Message ?? "Unknown";
         const exception = new ErrorCtor({});
         const output = {};
@@ -21897,20 +21887,27 @@ class Command {
         }
         const stack = clientStack.concat(this.middlewareStack);
         const { logger } = configuration;
+        const additionalSmithyContext = additionalContext[SMITHY_CONTEXT_KEY];
         const handlerExecutionContext = {
             logger,
             clientName,
             commandName,
             inputFilterSensitiveLog,
             outputFilterSensitiveLog,
+            ...additionalContext,
             [SMITHY_CONTEXT_KEY]: {
+                ...additionalSmithyContext,
                 commandInstance: this,
                 ...smithyContext,
+                ...(options?.metricsRecorder === undefined ? {} : { metricsRecorder: options.metricsRecorder }),
             },
-            ...additionalContext,
         };
         const { requestHandler } = configuration;
         let requestOptions = options ?? {};
+        if (requestOptions.metricsRecorder) {
+            requestOptions = { ...requestOptions };
+            delete requestOptions.metricsRecorder;
+        }
         if (smithyContext.eventStream) {
             requestOptions = {
                 isEventStream: true,
@@ -22065,6 +22062,7 @@ const createAggregatedClient = (commands, Client, options) => {
 };
 
 class ServiceException extends Error {
+    static shapeId = "smithy.ts.sdk.synthetic.nonamespace.client#ServiceException";
     $fault;
     $response;
     $retryable;
@@ -22093,10 +22091,46 @@ class ServiceException extends Error {
             return ServiceException.isInstance(instance);
         }
         if (ServiceException.isInstance(instance)) {
-            if (candidate.name && this.name) {
-                return this.prototype.isPrototypeOf(instance) || candidate.name === this.name;
+            if (this.prototype.isPrototypeOf(instance)) {
+                return true;
             }
-            return this.prototype.isPrototypeOf(instance);
+            const targetId = Object.prototype.hasOwnProperty.call(this, "shapeId")
+                ? this.shapeId
+                : undefined;
+            let candidateHasShapeId = false;
+            if (targetId) {
+                let proto = Object.getPrototypeOf(candidate);
+                while (proto && proto !== Object.prototype) {
+                    const ctor = proto.constructor;
+                    const candidateId = ctor !== ServiceException && Object.prototype.hasOwnProperty.call(ctor, "shapeId")
+                        ? ctor?.shapeId
+                        : undefined;
+                    if (candidateId) {
+                        candidateHasShapeId = true;
+                        if (candidateId === targetId) {
+                            return true;
+                        }
+                    }
+                    proto = Object.getPrototypeOf(proto);
+                }
+            }
+            if (targetId && candidateHasShapeId) {
+                return false;
+            }
+            const targetName = this.name;
+            if (targetName && targetName.length >= 6) {
+                if (candidate.name === targetName) {
+                    return true;
+                }
+                let proto = Object.getPrototypeOf(candidate);
+                while (proto && proto !== Object.prototype) {
+                    const ctorName = proto.constructor?.name;
+                    if (ctorName && ctorName !== "Error" && ctorName === targetName) {
+                        return true;
+                    }
+                    proto = Object.getPrototypeOf(proto);
+                }
+            }
         }
         return false;
     }
@@ -25111,7 +25145,7 @@ class HttpProtocol extends SerdeContext {
     constructor(options) {
         super();
         this.options = options;
-        this.compositeErrorRegistry = TypeRegistry.for(options.defaultNamespace);
+        this.compositeErrorRegistry = new TypeRegistry(options.defaultNamespace);
         for (const etr of options.errorTypeRegistries ?? []) {
             this.compositeErrorRegistry.copyFrom(etr);
         }
@@ -25206,6 +25240,47 @@ class HttpProtocol extends SerdeContext {
             cfId: output.headers["x-amz-cf-id"],
         };
     }
+    resolveError(name, namespaces, registries) {
+        const defaultErrorSchema = [-3, "", "Error", 0, [], [], 0];
+        let schema;
+        for (const registry of registries) {
+            for (const ns of namespaces) {
+                try {
+                    if (ns === "*") {
+                        schema = registry.getSchema(name);
+                    }
+                    else {
+                        schema = registry.getSchema(ns + "#" + name);
+                    }
+                    const errorCtor = registry.getErrorCtor(schema);
+                    if (errorCtor) {
+                        return [schema, errorCtor, "modeled"];
+                    }
+                    else {
+                        const syntheticErrorSchema = registry.getBaseException();
+                        if (syntheticErrorSchema) {
+                            const syntheticErrorCtor = registry.getErrorCtor(syntheticErrorSchema);
+                            if (syntheticErrorCtor) {
+                                return [schema, syntheticErrorCtor, "synthetic"];
+                            }
+                        }
+                    }
+                }
+                catch (ignored) {
+                }
+            }
+        }
+        for (const registry of registries) {
+            const syntheticErrorSchema = registry.getBaseException();
+            if (syntheticErrorSchema) {
+                const syntheticErrorCtor = registry.getErrorCtor(syntheticErrorSchema);
+                if (syntheticErrorCtor) {
+                    return [syntheticErrorSchema, syntheticErrorCtor, "synthetic"];
+                }
+            }
+        }
+        return [defaultErrorSchema, Error, "native"];
+    }
     async serializeEventStream({ eventStream, requestSchema, initialRequest, }) {
         const eventStreamSerde = await this.loadEventStreamCapability();
         return eventStreamSerde.serializeEventStream({
@@ -25234,13 +25309,6 @@ class HttpProtocol extends SerdeContext {
             compositeErrorRegistry: this.compositeErrorRegistry,
         });
     }
-    resolveEventStreamMarshaller(importedProvider) {
-        const context = this.serdeContext;
-        if (context.eventStreamMarshaller) {
-            return context.eventStreamMarshaller;
-        }
-        return importedProvider(this.serdeContext);
-    }
     getDefaultContentType() {
         throw new Error(`@smithy/core/protocols - ${this.constructor.name} getDefaultContentType() implementation missing.`);
     }
@@ -25253,6 +25321,13 @@ class HttpProtocol extends SerdeContext {
             throw new Error("@smithy/core - HttpProtocol: eventStreamMarshaller missing in serdeContext.");
         }
         return context.eventStreamMarshaller;
+    }
+    resolveEventStreamMarshaller(importedProvider) {
+        const context = this.serdeContext;
+        if (context.eventStreamMarshaller) {
+            return context.eventStreamMarshaller;
+        }
+        return importedProvider(this.serdeContext);
     }
 }
 
@@ -27571,12 +27646,12 @@ class TypeRegistry {
         this.namespace = namespace;
         this.schemas = schemas;
         this.exceptions = exceptions;
+        if (!TypeRegistry.registries.has(namespace)) {
+            TypeRegistry.registries.set(namespace, this);
+        }
     }
     static for(namespace) {
-        if (!TypeRegistry.registries.has(namespace)) {
-            TypeRegistry.registries.set(namespace, new TypeRegistry(namespace));
-        }
-        return TypeRegistry.registries.get(namespace);
+        return TypeRegistry.registries.get(namespace) ?? new TypeRegistry(namespace);
     }
     copyFrom(other) {
         const { schemas, exceptions } = this;
@@ -27594,7 +27669,9 @@ class TypeRegistry {
     register(shapeId, schema) {
         const qualifiedName = this.normalizeShapeId(shapeId);
         for (const r of [this, TypeRegistry.for(qualifiedName.split("#")[0])]) {
-            r.schemas.set(qualifiedName, schema);
+            if (!r.schemas.has(qualifiedName)) {
+                r.schemas.set(qualifiedName, schema);
+            }
         }
     }
     getSchema(shapeId) {
@@ -27619,9 +27696,15 @@ class TypeRegistry {
     registerError(es, ctor) {
         const $error = es;
         const ns = $error[1];
+        const qualifiedName = ns + "#" + $error[2];
+        if (!ctor.hasOwnProperty?.("shapeId")) {
+            ctor.shapeId = qualifiedName;
+        }
         for (const r of [this, TypeRegistry.for(ns)]) {
-            r.schemas.set(ns + "#" + $error[2], $error);
-            r.exceptions.set($error, ctor);
+            if (!r.schemas.has(qualifiedName) && !r.exceptions.has($error)) {
+                r.schemas.set(qualifiedName, $error);
+                r.exceptions.set($error, ctor);
+            }
         }
     }
     getErrorCtor(es) {
@@ -31250,7 +31333,10 @@ const getCanonicalHeaders = ({ headers }, unsignableHeaders, signableHeaders) =>
                 continue;
             }
         }
-        canonical[canonicalHeaderName] = headers[headerName].trim().replace(/\s+/g, " ");
+        canonical[canonicalHeaderName] = headers[headerName]
+            .replace(/[\r\n]/g, " ")
+            .replace(/[ \t]+/g, " ")
+            .replace(/^ | $/g, "");
     }
     return canonical;
 };
@@ -32009,54 +32095,47 @@ function getMimeType(fileName) {
   return mime.lookup(fileName) || "application/octet-stream";
 }
 
-const BASE36_CHARS = "0123456789abcdefghijklmnopqrstuvwxyz";
+// 支持的文件内容哈希占位符
+const HASH_PLACEHOLDERS = {
+  md5: (body) => crypto.createHash("md5").update(body).digest("hex"),
+  shortmd5: (body) =>
+    crypto.createHash("md5").update(body).digest("hex").slice(0, 12),
+  sha1: (body) => crypto.createHash("sha1").update(body).digest("hex"),
+  sha256: (body) => crypto.createHash("sha256").update(body).digest("hex"),
+};
 
-// 将 buffer 视为大整数做 Base36 编码（仅含 0-9 a-z）
-function base36Encode(buffer) {
-  let num = BigInt(`0x${buffer.toString("hex")}`);
-  if (num === 0n) return "0";
-  let result = "";
-  while (num > 0n) {
-    result = BASE36_CHARS[Number(num % 36n)] + result;
-    num /= 36n;
+// 替换存储路径模板中的 {year}/{month}/{day}/{md5}/{shortmd5}/{sha1}/{sha256} 占位符
+function resolvePathTemplate(template, { date, body }) {
+  const year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  let result = template
+    .replace(/\{year\}/g, year)
+    .replace(/\{month\}/g, month)
+    .replace(/\{day\}/g, day);
+  for (const [name, compute] of Object.entries(HASH_PLACEHOLDERS)) {
+    const placeholder = `{${name}}`;
+    if (result.includes(placeholder)) {
+      result = result.split(placeholder).join(compute(body));
+    }
   }
   return result;
 }
 
-// 基于文件内容 md5、时间戳与随机盐生成短 id，避免文件名冲突和内容可预测
-function generateFileId(body) {
-  const fileHash = crypto.createHash("md5").update(body).digest("hex");
-  const timestamp = Date.now().toString();
-  const salt = crypto.randomBytes(8).toString("hex");
-  const encoded = base36Encode(
-    Buffer.from(fileHash + timestamp + salt, "utf8"),
-  );
-  return encoded.slice(0, 12);
-}
-
-// 替换存储路径模板中的 {year}/{month}/{day}/{md5} 占位符
-function resolvePathTemplate(template, { md5, date }) {
-  const year = String(date.getFullYear());
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return template
-    .replace(/\{year\}/g, year)
-    .replace(/\{month\}/g, month)
-    .replace(/\{day\}/g, day)
-    .replace(/\{md5\}/g, md5);
-}
-
 function buildKey(pathPrefix, fileName, body) {
   const template = pathPrefix || "";
-  const hasMd5Placeholder = template.includes("{md5}");
-  const md5 = hasMd5Placeholder ? generateFileId(body) : "";
-  const resolved = resolvePathTemplate(template, { md5, date: new Date() });
+  const hasHashPlaceholder = Object.keys(HASH_PLACEHOLDERS).some((name) =>
+    template.includes(`{${name}}`),
+  );
+  const resolved = resolvePathTemplate(template, { date: new Date(), body });
   const prefix = resolved.replace(/^\/+|\/+$/g, "");
 
-  // 路径中使用了 {md5} 时，用解析结果替代原文件名，仅保留原扩展名，同时把新文件名回传给调用方以同步相册显示
-  if (hasMd5Placeholder) {
+  // 路径中使用了哈希占位符时，用解析结果替代原文件名，仅保留原扩展名，同时把新文件名回传给调用方以同步相册显示
+  if (hasHashPlaceholder) {
     const extname = path.extname(fileName);
-    const key = prefix ? `${prefix}${extname}` : `${md5}${extname}`;
+    const key = prefix
+      ? `${prefix}${extname}`
+      : `${HASH_PLACEHOLDERS.shortmd5(body)}${extname}`;
     return { key, fileName: path.basename(key) };
   }
 
@@ -32233,7 +32312,7 @@ function pluginConfig(ctx) {
       type: "input",
       default: userConfig.path || "",
       required: false,
-      message: "留空则存储在根目录，支持固定参数，例如 {year}/{md5}",
+      message: "留空则存储在根目录，支持哈希占位符和日期占位符",
       alias: "存储路径",
     },
   ];

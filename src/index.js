@@ -97,54 +97,47 @@ function getMimeType(fileName) {
   return mime.lookup(fileName) || "application/octet-stream";
 }
 
-const BASE36_CHARS = "0123456789abcdefghijklmnopqrstuvwxyz";
+// 支持的文件内容哈希占位符
+const HASH_PLACEHOLDERS = {
+  md5: (body) => crypto.createHash("md5").update(body).digest("hex"),
+  shortmd5: (body) =>
+    crypto.createHash("md5").update(body).digest("hex").slice(0, 12),
+  sha1: (body) => crypto.createHash("sha1").update(body).digest("hex"),
+  sha256: (body) => crypto.createHash("sha256").update(body).digest("hex"),
+};
 
-// 将 buffer 视为大整数做 Base36 编码（仅含 0-9 a-z）
-function base36Encode(buffer) {
-  let num = BigInt(`0x${buffer.toString("hex")}`);
-  if (num === 0n) return "0";
-  let result = "";
-  while (num > 0n) {
-    result = BASE36_CHARS[Number(num % 36n)] + result;
-    num /= 36n;
+// 替换存储路径模板中的 {year}/{month}/{day}/{md5}/{shortmd5}/{sha1}/{sha256} 占位符
+function resolvePathTemplate(template, { date, body }) {
+  const year = String(date.getFullYear());
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  let result = template
+    .replace(/\{year\}/g, year)
+    .replace(/\{month\}/g, month)
+    .replace(/\{day\}/g, day);
+  for (const [name, compute] of Object.entries(HASH_PLACEHOLDERS)) {
+    const placeholder = `{${name}}`;
+    if (result.includes(placeholder)) {
+      result = result.split(placeholder).join(compute(body));
+    }
   }
   return result;
 }
 
-// 基于文件内容 md5、时间戳与随机盐生成短 id，避免文件名冲突和内容可预测
-function generateFileId(body) {
-  const fileHash = crypto.createHash("md5").update(body).digest("hex");
-  const timestamp = Date.now().toString();
-  const salt = crypto.randomBytes(8).toString("hex");
-  const encoded = base36Encode(
-    Buffer.from(fileHash + timestamp + salt, "utf8"),
-  );
-  return encoded.slice(0, 12);
-}
-
-// 替换存储路径模板中的 {year}/{month}/{day}/{md5} 占位符
-function resolvePathTemplate(template, { md5, date }) {
-  const year = String(date.getFullYear());
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return template
-    .replace(/\{year\}/g, year)
-    .replace(/\{month\}/g, month)
-    .replace(/\{day\}/g, day)
-    .replace(/\{md5\}/g, md5);
-}
-
 function buildKey(pathPrefix, fileName, body) {
   const template = pathPrefix || "";
-  const hasMd5Placeholder = template.includes("{md5}");
-  const md5 = hasMd5Placeholder ? generateFileId(body) : "";
-  const resolved = resolvePathTemplate(template, { md5, date: new Date() });
+  const hasHashPlaceholder = Object.keys(HASH_PLACEHOLDERS).some((name) =>
+    template.includes(`{${name}}`),
+  );
+  const resolved = resolvePathTemplate(template, { date: new Date(), body });
   const prefix = resolved.replace(/^\/+|\/+$/g, "");
 
-  // 路径中使用了 {md5} 时，用解析结果替代原文件名，仅保留原扩展名，同时把新文件名回传给调用方以同步相册显示
-  if (hasMd5Placeholder) {
+  // 路径中使用了哈希占位符时，用解析结果替代原文件名，仅保留原扩展名，同时把新文件名回传给调用方以同步相册显示
+  if (hasHashPlaceholder) {
     const extname = path.extname(fileName);
-    const key = prefix ? `${prefix}${extname}` : `${md5}${extname}`;
+    const key = prefix
+      ? `${prefix}${extname}`
+      : `${HASH_PLACEHOLDERS.shortmd5(body)}${extname}`;
     return { key, fileName: path.basename(key) };
   }
 
@@ -321,7 +314,7 @@ function pluginConfig(ctx) {
       type: "input",
       default: userConfig.path || "",
       required: false,
-      message: "留空则存储在根目录，支持固定参数，例如 {year}/{md5}",
+      message: "留空则存储在根目录，支持哈希占位符和日期占位符",
       alias: "存储路径",
     },
   ];
